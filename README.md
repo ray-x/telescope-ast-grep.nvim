@@ -25,7 +25,14 @@ Currently, the extension supports a limited set of languages.
 }
 ```
 
-### Screenshot
+## Execute
+
+```vim
+:Telescope AST_grep
+:Telescope dumb_jump
+```
+
+## Screenshot
 
 <img width="720" alt="image" src="https://user-images.githubusercontent.com/1681295/280497477-794da50e-9f56-4e4b-b0d3-6e5a8c3a1433.png">
 <img width="720" alt="image" src="https://user-images.githubusercontent.com/1681295/280444283-ebe5159e-a3d8-4291-b642-a7c8903a08a0.png">
