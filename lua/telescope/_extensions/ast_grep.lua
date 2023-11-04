@@ -1,6 +1,14 @@
 local telescope = require('telescope')
 local lprint = lprint or function(...) end
-local ast_grep = function(opts)
+
+local function simplifyLine(line)
+  local pre, match, post = line:match('(.*:%d+:%d+:)(%d+:%d+:)(.*)')
+  if match and not post:match('^".*') and not post:match("^'.*") then
+    line = pre .. post
+  end
+  return line
+end
+local AST_grep = function(opts)
   local ft = vim.bo.filetype
   local finders = require('telescope.finders')
   local pickers = require('telescope.pickers')
@@ -37,34 +45,32 @@ local ast_grep = function(opts)
       '-c',
       [[sg -p ]]
         .. string.format("'%s' -l %s", prompt, ft)
-        .. [[ --json | jq -r '.[] | "\(.file):\((.range.start.line + 1)):\((.range.start.column + 1)):\(.lines)" |
+        .. [[ --json=stream | jq -r '"\(.file):\((.range.start.line + 1)):\((.range.start.column + 1)):\((.range.end.line + 1)):\((.range.end.column + 1)): \(.lines)" |
         split("\n") | .[0]']],
     }
     lprint(ast_grep_cmd)
     return ast_grep_cmd
   end
 
-  -- apply theme
-  if type(opts.theme) == 'table' then
-    opts = vim.tbl_extend('force', opts, opts.theme)
-  elseif type(opts.theme) == 'string' then
-    local themes = require('telescope.themes')
-    if themes['get_' .. opts.theme] == nil then
-      vim.notify_once(
-        'live grep args config theme »' .. opts.theme .. '« not found',
-        vim.log.levels.WARN
-      )
-    else
-      opts = themes['get_' .. opts.theme](opts)
-    end
+  local grepper = make_entry.gen_from_vimgrep(opts)
+  local entry_maker = function(line)
+    local _, _, filename, lnum, col, lnend, colend, text =
+      string.find(line, [[(..-):(%d+):(%d+):(%d+):(%d+):(.*)]])
+    lprint(line, filename, lnum, col, lnend, colend, text)
+    line = simplifyLine(line)
+    local mt = grepper(line)
+    mt.finish = lnend
+    mt.lnend = lnend
+    mt.colend = colend
+    -- print(vim.inspect(mt), vim.inspect(mt.lnum))
+    return mt
   end
 
-  opts.entry_maker = opts.entry_maker or make_entry.gen_from_vimgrep(opts)
   lprint(opts)
   pickers
     .new(opts, {
       prompt_title = 'AST Grep',
-      finder = finders.new_job(cmd_generator, opts.entry_maker, _, opts.cwd),
+      finder = finders.new_job(cmd_generator, entry_maker, _, opts.cwd),
       previewer = conf.grep_previewer(opts),
       sorter = sorters.highlighter_only(opts),
     })
@@ -76,6 +82,6 @@ return telescope.register_extension({
     -- add config
   end,
   exports = {
-    ast_grep = ast_grep, -- historical name
+    AST_grep = AST_grep, -- historical name
   },
 })

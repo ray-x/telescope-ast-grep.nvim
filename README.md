@@ -33,3 +33,9 @@ Currently, the extension supports a limited set of languages.
 
 
 <img width="726" alt="image" src="https://user-images.githubusercontent.com/1681295/280444283-ebe5159e-a3d8-4291-b642-a7c8903a08a0.png">
+
+### Similar plugins
+
+[telescope-sg](https://github.com/Marskey/telescope-sg)
+[any-jump.vim](https://github.com/pechorin/any-jump.vim)
+
