@@ -40,7 +40,7 @@ local ast_grep = function(opts)
         .. [[ --json | jq -r '.[] | "\(.file):\((.range.start.line + 1)):\((.range.start.column + 1)):\(.lines)" |
         split("\n") | .[0]']],
     }
-    print(vim.inspect(ast_grep_cmd))
+    lprint(ast_grep_cmd)
     return ast_grep_cmd
   end
 
@@ -60,7 +60,7 @@ local ast_grep = function(opts)
   end
 
   opts.entry_maker = opts.entry_maker or make_entry.gen_from_vimgrep(opts)
-  print(vim.inspect(opts))
+  lprint(opts)
   pickers
     .new(opts, {
       prompt_title = 'AST Grep',
