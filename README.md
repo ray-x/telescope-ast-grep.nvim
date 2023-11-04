@@ -22,20 +22,16 @@ Currently, the extension supports a limited set of languages.
     {'nvim-lua/plenary.nvim'},
     {'nvim-telescope/telescope.nvim'},
   },
-  config = function()
-  end
 }
 ```
 
 ### Screenshot
 
-<img width="723" alt="image" src="https://user-images.githubusercontent.com/1681295/280444212-e6aeee3d-7305-4e44-bf0b-444dca15a693.png">
-
-
-<img width="726" alt="image" src="https://user-images.githubusercontent.com/1681295/280444283-ebe5159e-a3d8-4291-b642-a7c8903a08a0.png">
+<img width="720" alt="image" src="https://user-images.githubusercontent.com/1681295/280497477-794da50e-9f56-4e4b-b0d3-6e5a8c3a1433.png">
+<img width="720" alt="image" src="https://user-images.githubusercontent.com/1681295/280444283-ebe5159e-a3d8-4291-b642-a7c8903a08a0.png">
 
 ### Similar plugins
 
-[telescope-sg](https://github.com/Marskey/telescope-sg)
-[any-jump.vim](https://github.com/pechorin/any-jump.vim)
+- [telescope-sg](https://github.com/Marskey/telescope-sg)
+- [any-jump.vim](https://github.com/pechorin/any-jump.vim)
 
