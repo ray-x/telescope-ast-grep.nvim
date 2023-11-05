@@ -75,6 +75,29 @@ local regex_js = function(word)
   return var
 end
 
+local regex_cpp = function(word)
+  local var = ''
+  var = var
+    .. string.format(
+      '\\b%s(\\s|\\))*\\((\\w|[,&*.<>:]|\\s)*(\\))\\s*(const|->|\\{|$)|typedef\\s+(\\w|[(*]|\\s)+%s(\\)|\\s)*\\(',
+      word,
+      word
+    )
+  var = var
+    .. string.format(
+      '|\\b(?!(class\\b|struct\\b|return\\b|else\\b|delete\\b))(\\w+|[,>])([*&]|\\s)+%s\\s*(\\[(\\d|\\s)*\\])*\\s*([=,(){;]|:\\s*\\d)|#define\\s+%s\\b',
+      word,
+      word
+    )
+  var = var
+    .. string.format(
+      '|\\b(class|struct|enum|union)\\b\\s*%s\\b\\s*(final\\s*)?(:((\\s*\\w+\\s*::)*\\s*\\w*\\s*<?(\\s*\\w+\\s*::)*\\w+>?\\s*,*)+)?((\\{|$))|}\\s*%s\\b\\s*;',
+      word,
+      word
+    )
+  return var
+end
+
 local regex_typescript = function(word)
   return regex_js(word)
 end
@@ -95,6 +118,8 @@ local dumb_jump = function(opts)
     var = regex_js(word)
   elseif vim.bo.filetype == 'typescript' then
     var = regex_typescript(word)
+  elseif vim.bo.filetype == 'cpp' or vim.bo.filetype == 'c'  then
+    var = regex_cpp(word)
   else
     var = word
   end

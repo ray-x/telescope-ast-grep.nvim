@@ -6,7 +6,7 @@
 
 Currently, the extension supports a limited set of languages.
 - For ast_grep, check supported languages [here](https://github.com/ast-grep/ast-grep)
-- dumb_jump, Please refer to the source code for current language support. As of now, I've integrated support for python, go, lua, and js/ts, which are the languages I most frequently use.
+- dumb_jump, Please refer to the source code for current language support. As of now, I've integrated support for python, go, lua, c/cpp, and js/ts
 
 ## Requirements
 - [install ast-grep](https://github.com/ast-grep/ast-grep#installation)
