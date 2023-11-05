@@ -32,7 +32,7 @@ local reg_go = function(word)
   var = var .. string.format('\\s*\\b%s\\s*=[^=\\n]+|\\s*\\b%s\\s*:=\\s*', word, word)
   var = var .. string.format('|func\\s+\\([^\\)]*\\)\\s+%s\\s*\\(', word)
   var = var .. string.format('|func\\s+%s\\s*\\(', word)
-  var = var .. string.format("|type\\s+%s\\s+struct\\s+\\{", word)
+  var = var .. string.format('|type\\s+%s\\s+struct\\s+\\{', word)
   return var
 end
 
@@ -44,6 +44,26 @@ local regex_py = function(word)
   return var
 end
 
+local regex_js = function(word)
+  local var = ''
+  var = var .. string.format('\\s*\\b%s\\s*=\\s*|\\s*\\b%s\\s*:\\s*', word, word)
+  var = var .. string.format('|class\\s+%s\\s*\\{', word)
+  var = var .. string.format('|class\\s+%s\\s+extends', word)
+  var = var .. string.format('|function\\s+%s\\s*\\(', word)
+  var = var .. string.format('|\\b%s\\s*:\\s*function\\s*\\(', word)
+  var = var .. string.format('|\\b%s\\s*\\([^()]*\\)\\s*[{]', word)
+  return var
+end
+local regex_lua = function(word)
+  local var = ''
+  var = var .. string.format('\\s*\\b%s\\s*= [^=\\n]+\\s*', word, word)
+  var = var .. string.format('|\\bfunction\\b[^\\(]*\\\\(\\s*[^\\)]*\\b%s\\b\\s*,?\\s*\\\\)?', word)
+  -- function
+  var = var .. string.format('|function\\s*%s\\s*\\(', word)
+  var = var .. string.format('|function\\s*.+[.:]%s\\s*\\\\(', word)
+  var = var .. string.format('|\\b%s\\s*=\\s*function\\s*\\\\(', word)
+  var = var .. string.format('|\\b.+\\.%s\\s*=\\s*function\\s*\\\\(', word)
+end
 local regex_js = function(word)
   local var = ''
   var = var .. string.format('\\s*\\b%s\\s*=\\s*|\\s*\\b%s\\s*:\\s*', word, word)
@@ -69,6 +89,8 @@ local dumb_jump = function(opts)
     var = reg_go(word)
   elseif vim.bo.filetype == 'python' then
     var = regex_py(word)
+  elseif vim.bo.filetype == 'lua' then
+    var = regex_lua(word)
   elseif vim.bo.filetype == 'javascript' then
     var = regex_js(word)
   elseif vim.bo.filetype == 'typescript' then
